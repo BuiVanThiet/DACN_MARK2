@@ -15,4 +15,11 @@ public interface CtspRepository extends CrudRepository<CTSP,Integer> {
     Iterable<Statistical> getAllProductAndQuantity();
     @Query("select ctsp from  CTSP ctsp where ctsp.trangThai = 'Hoat dong' and ctsp.soLuongTon > 0")
     Iterable<CTSP> getCTSPExist();
+    //ngay1thang6
+    @Query("SELECT ctsp FROM CTSP ctsp WHERE ctsp.sanPham.id = :idSP AND (:idMS IS NULL OR ctsp.mauSac.id = :idMS) AND (:idS IS NULL OR ctsp.size.id = :idS)")
+    ArrayList<CTSP> getCTSPByIdSP_IdMS_IdS(@Param("idSP") Integer idSP, @Param("idMS") Integer idMS, @Param("idS") Integer idS);
+    @Query("SELECT ctsp FROM CTSP ctsp WHERE ctsp.sanPham.tenSanPham like %:ten% AND (:idMS IS NULL OR ctsp.mauSac.id = :idMS) AND (:idS IS NULL OR ctsp.size.id = :idS)")
+    ArrayList<CTSP> getCTSPByNameSP_IdMS_IdS(@Param("ten") String ten, @Param("idMS") Integer idMS, @Param("idS") Integer idS);
+    @Query("SELECT ctsp FROM CTSP ctsp WHERE ctsp.sanPham.tenSanPham like %:ten%")
+    ArrayList<CTSP> getCTSPByNameSP(@Param("ten") String ten);
 }

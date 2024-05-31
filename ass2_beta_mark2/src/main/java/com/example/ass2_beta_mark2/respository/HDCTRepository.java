@@ -2,10 +2,12 @@ package com.example.ass2_beta_mark2.respository;
 
 import com.example.ass2_beta_mark2.entity.model.HDCT;
 import com.example.ass2_beta_mark2.entity.sumMoney.TotalAmount;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -23,4 +25,7 @@ public interface HDCTRepository extends CrudRepository<HDCT,Integer> {
 
     @Query("select new com.example.ass2_beta_mark2.entity.sumMoney.TotalAmount(hdct.hoaDon.id,sum(hdct.tongTien)) from HDCT hdct where hdct.hoaDon.id = :idCheck group by hdct.hoaDon.id")
     Optional<TotalAmount> getSumMoneyByID(@Param("idCheck") Integer id);
+    //ngay1thang6
+    @Query("select hdct from HDCT hdct where hdct.hoaDon.id = :idCheck")
+    Page<HDCT> getHDCTByIdHD_Page(@Param("idCheck") Integer id, Pageable pageable);
 }
