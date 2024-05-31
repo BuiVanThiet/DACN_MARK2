@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{html/Home.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div layout:fragment="content">
+
+    <div class="row">
+      <div class="col-8">
+        <div class="card card h-100 bg-transparent text-white border">
+          <div class="card-body">
+            <p class="fs-4 fw-bold">Danh sách hóa đơn</p>
+            <table>
+              <thead>
+              <tr>
+                <th scope="col">STT</th>
+                <th scope="col">ID</th>
+                <th scope="col">Tên khách hàng</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Chức năng</th>
+              </tr>
+              </thead>
+              <tbody class="table-while">
+              <tr th:each="hd,index : ${listHD}">
+                <th scope="row" th:text="${index.index + 1}"></th>
+                <td th:text="${hd.id}"></td>
+                <td th:text="${hd.khachHang.hoTen}"></td>
+                <td th:text="${hd.ngayTao}"></td>
+                <td th:each="tien : ${listTien}" th:if="${hd.id == tien.id}" th:text="${tien.tongTien}"></td>
+                </td>
+
+                <td th:text="${hd.trangThai}"></td>
+                <td>
+                  <a th:href="@{'/BanHang/HDCT/'+${hd.id}}" class="btn btn-warning text-white bg-transparent">Xem</a>
+<!--                  <a th:href="" class="btn btn-danger text-white bg-transparent">Xóa</a>-->
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <br>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center"> <!-- Sử dụng lớp justify-content-center để căn giữa -->
+                <li class="page-item"><a class="page-link bg-transparent text-white" href="">1</a></li>
+              </ul>
+            </nav>
+            <p class="fs-4 fw-bold">Danh sách hóa đơn chi tiết</p>
+            <table>
+              <thead>
+              <tr>
+                <th scope="col">STT</th>
+                <th scope="col">ID</th>
+                <th scope="col">IDCTSP</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Giá bán</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Chức năng</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="hdct,index : ${listHDCT}">
+                <th scope="row" th:text="${index.index + 1}"></th>
+                <td th:text="${hdct.id}"></td>
+                <td th:text="${hdct.ctsp.id}"></td>
+                <td th:text="${hdct.ctsp.sanPham.tenSanPham}"></td>
+                <td th:text="${hdct.soLuongMua}"></td>
+                <td th:text="${hdct.giaBan}"></td>
+                <td th:text="${hdct.tongTien}"></td>
+                <td>
+                  <a th:href="@{'/BanHang/DeleteCTHD/'+${hdct.id}}" class="btn btn-danger text-white bg-transparent">Xoa</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <br>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center"> <!-- Sử dụng lớp justify-content-center để căn giữa -->
+                <li class="page-item"><a class="page-link bg-transparent text-white" href="">1</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card card h-100 bg-transparent text-white border">
+          <div class="card-header text-center">
+            Thông tin hóa đơn
+          </div>
+          <div class="card-body">
+            <form th:action="${'/BanHang/SDT'}" method="get">
+              <label class="form-label">Tìm số điện thoại</label>
+              <div class="input-group">
+                <input type="text" class="form-control bg-transparent text-white" name="sdt" th:field="*{kh.sdt}">
+                <input type="submit" name="" value="Scan" class="btn btn-primary text-white bg-transparent">
+              </div>
+            </form>
+            <hr>
+            <div class="mb-3">
+              <label class="form-label">Tên Khách hàng</label>
+              <input type="text" class="form-control bg-transparent text-white" th:field="*{kh.hoTen}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">ID hóa đơn</label>
+              <input type="text" class="form-control bg-transparent text-white" th:field="*{hd.id}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Tổng tiền</label>
+              <input type="text" class="form-control bg-transparent text-white" th:field="*{sumMoney.tongTien}">
+            </div>
+            <div class="row">
+              <div class="col-12 mb-3">
+                <button type="button" id="taoHDGoc" class="btn btn-outline-success col-12" data-bs-toggle="modal" data-bs-target="#taoHD">
+                  Tao hoa don
+                </button>
+              </div>
+              <div class="col-6 mb-3">
+                <a th:href="@{'/BanHang/pay'}" class="btn btn-outline-primary col-12">Thanh toan</a>
+              </div>
+              <div class="col-6 mb-3">
+                <a th:href="@{'/BanHang/clear'}" class="btn btn-outline-danger col-12">Clear</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <form action="" method="post" class="text-white">
+      <div class="mb-3">
+        <label class="form-label">Tìm kiếm theo tên sản phẩm</label>
+        <input type="text" class="form-control bg-transparent text-white" value="" name="tenCheck">
+      </div>
+    </form>
+    <br>
+
+    <div class="col-12">
+      <div class="card bg-transparent text-white border">
+        <div class="card-header text-center">
+          Danh sách sản phẩm
+        </div>
+        <div class="card-body">
+          <table>
+            <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">ID</th>
+              <th scope="col">Tên sản phẩm</th>
+              <th scope="col">Màu sắc</th>
+              <th scope="col">Size</th>
+              <th scope="col">Giá bán</th>
+              <th scope="col">Số lượng tồn</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Chức năng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="spct,index : ${listSPCT}">
+              <th scope="row" th:text="${index.index + 1}"></th>
+              <td th:text="${spct.id}"></td>
+              <td th:text="${spct.sanPham.tenSanPham}"></td>
+              <td th:text="${spct.mauSac.tenMau}"></td>
+              <td th:text="${spct.size.ten}"></td>
+              <td th:text="${spct.giaBan}"></td>
+              <td th:text="${spct.soLuongTon}"></td>
+              <td th:text="${spct.trangThai}"></td>
+              <td>
+
+                <button type="button" class="btn btn-primary bg-transparent text-white" data-bs-toggle="modal" th:data-bs-target="${'#muaSP'+spct.id}">
+                  Mua
+                </button>
+
+                <div class="modal fade" th:id="${'muaSP'+spct.id}" tabindex="-1" th:aria-labelledby="${'exampleModalLabel'+spct.id}" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-black" th:id="${'exampleModalLabel'+spct.id}" th:text="${'Sản phẩm '+ spct.sanPham.tenSanPham}"> </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form th:action="@{'/BanHang/Mua'}" method="post">
+                        <input type="hidden">
+                        <div class="modal-body">
+                          <input type="hidden" name="idSPCT" th:value="${spct.id}">
+                          <input type="number" name="sl" th:id="${'sl'+spct.id}" class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" th:id="${'purchaseButton'+spct.id}" class="btn btn-primary">Mua</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <br>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center"> <!-- Sử dụng lớp justify-content-center để căn giữa -->
+              <li class="page-item"><a class="page-link bg-transparent text-white" href="">1</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal nhap so luong -->
+<!--    <div class="modal fade" id="muaSP6" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--      <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header">-->
+<!--            <h1 class="modal-title fs-5" id="exampleModalLabel">Sản phẩm </h1>-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--          </div>-->
+<!--          <div class="modal-body">-->
+<!--            <label class="form-label">Số lượng mua</label>-->
+<!--            <input type="text" class="form-control bg-transparent text-white">-->
+<!--          </div>-->
+<!--          <div class="modal-footer">-->
+<!--            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--            <button type="button" class="btn btn-primary">Save changes</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <!-- <%--modal cho nut Tao hoa don--%> -->
+
+    <div class="modal fade text-dark" id="taoHD" tabindex="-1" aria-labelledby="thongTin" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="thongTin">Tao hoa don</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <span th:text="'Tên khách hàng là: ' + ${kh.hoTen}"></span>
+            <br>
+            <span th:text="'SDT: ' + ${kh.sdt}"></span>
+            <br>
+            <span th:text="'Địa chỉ: ' + ${kh.getDiaChi()}"></span>
+          </div>
+          <div class="modal-footer">
+            <a th:href="@{'/BanHang/addHoaDon'}" class="btn btn-success">Tao hoa dong</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
