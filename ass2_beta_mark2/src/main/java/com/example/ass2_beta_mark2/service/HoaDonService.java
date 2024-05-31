@@ -1,6 +1,7 @@
 package com.example.ass2_beta_mark2.service;
 
 import com.example.ass2_beta_mark2.entity.model.HoaDon;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -31,6 +32,8 @@ public interface HoaDonService {
     void deleteAll();
 
     ArrayList<HoaDon> getALLHDByTT();
+    //ngay1thang6
+    Page<HoaDon> getPhanTrang(int page, int pageSize);
 
 //    Optional<HoaDon> getHDByID(Integer id);
 }

@@ -4,6 +4,9 @@ import com.example.ass2_beta_mark2.entity.model.ChucVu;
 import com.example.ass2_beta_mark2.respository.ChucVuRepository;
 import com.example.ass2_beta_mark2.service.ChucVuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,5 +75,20 @@ public class ChucVuImplement implements ChucVuService {
     @Override
     public void deleteAll() {
         qlcv.deleteAll();
+    }
+
+    @Override
+    public ArrayList<ChucVu> getCVByName(String tenCV) {
+        return qlcv.getAllChucVuByName(tenCV);
+    }
+
+    @Override
+    public Page<ChucVu> getPhanTrang(int page, int pageSize, String tenCV) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        if (tenCV == null || tenCV.isEmpty()) {
+            return qlcv.findAll(pageable);
+        } else {
+            return qlcv.findByTenChucVuContainingIgnoreCase(tenCV, pageable);
+        }
     }
 }

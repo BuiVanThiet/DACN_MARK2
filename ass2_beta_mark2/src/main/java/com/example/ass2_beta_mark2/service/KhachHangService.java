@@ -1,6 +1,7 @@
 package com.example.ass2_beta_mark2.service;
 
 import com.example.ass2_beta_mark2.entity.model.KhachHang;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -31,4 +32,6 @@ public interface KhachHangService {
     void deleteAll();
 
     Optional<KhachHang> getKHBySDT(String sdt);
+    //ngay1thang6
+    Page<KhachHang> getPhanTrang(int page, int pageSize, String ten);
 }

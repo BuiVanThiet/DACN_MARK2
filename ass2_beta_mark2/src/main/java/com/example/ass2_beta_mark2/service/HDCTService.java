@@ -2,6 +2,7 @@ package com.example.ass2_beta_mark2.service;
 
 import com.example.ass2_beta_mark2.entity.model.HDCT;
 import com.example.ass2_beta_mark2.entity.sumMoney.TotalAmount;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -36,4 +37,6 @@ public interface HDCTService {
     ArrayList<HDCT> getHDCTByIdHD(Integer id);
 
     Optional<TotalAmount> getSumMoneyById(Integer id);
+    //ngay1thang6
+    Page<HDCT> getHDCTByIdHD_Page(Integer id, int page, int pageSize);
 }

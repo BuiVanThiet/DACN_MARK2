@@ -4,11 +4,13 @@ import com.example.ass2_beta_mark2.entity.model.CTSP;
 import com.example.ass2_beta_mark2.entity.statistical.Statistical;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-
-public interface CtspRepository extends CrudRepository<CTSP,Integer> {
+@Repository
+public interface CtspRepository extends CrudRepository<CTSP,Integer>, PagingAndSortingRepository<CTSP,Integer> {
     @Query("select ctsp from CTSP ctsp WHERE ctsp.sanPham.id = :idCheck")
     Iterable<CTSP> getAll(@Param("idCheck") Integer idSP);
     @Query("SELECT new com.example.ass2_beta_mark2.entity.statistical.Statistical(sp.tenSanPham, SUM(ct.soLuongTon)) FROM CTSP ct INNER JOIN ct.sanPham sp GROUP BY sp.tenSanPham")

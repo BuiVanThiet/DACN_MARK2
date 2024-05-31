@@ -1,6 +1,7 @@
 package com.example.ass2_beta_mark2.service;
 
 import com.example.ass2_beta_mark2.entity.model.ChucVu;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,4 +30,8 @@ public interface ChucVuService {
     void deleteAll(ArrayList<ChucVu> entities);
 
     void deleteAll();
+    //ngay1thang6
+    ArrayList<ChucVu> getCVByName(String tenCV);
+
+    Page<ChucVu> getPhanTrang(int page, int pageSize, String tenCV);
 }

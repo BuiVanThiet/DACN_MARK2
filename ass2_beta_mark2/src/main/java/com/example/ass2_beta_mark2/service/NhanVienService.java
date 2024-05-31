@@ -1,6 +1,7 @@
 package com.example.ass2_beta_mark2.service;
 
 import com.example.ass2_beta_mark2.entity.model.NhanVien;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -31,4 +32,8 @@ public interface NhanVienService {
     void deleteAll();
 
     Optional<NhanVien> getNVBySdt(String sdt);
+    //ngay1thang6
+    ArrayList<NhanVien> getNVByName(String ten);
+
+    Page<NhanVien> getPhanTrang(int page, int pageSize, String ten);
 }

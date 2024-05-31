@@ -1,6 +1,7 @@
 package com.example.ass2_beta_mark2.service;
 
 import com.example.ass2_beta_mark2.entity.model.SanPham;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -31,4 +32,8 @@ public interface SanPhamService {
     void deleteAll();
 
     SanPham getSPByMa(String ma);
+    //ngay1thang6
+    ArrayList<SanPham> getSPByName(String name);
+
+    Page<SanPham> getPhanTrang(int page, int pageSize, String name);
 }

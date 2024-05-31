@@ -36,4 +36,8 @@ public interface CtspService {
     ArrayList<Statistical> getAllProductAndQuantity();
 
     ArrayList<CTSP> getCTSPExist();
+    //ngay1thang6
+    ArrayList<CTSP> getCTSPByIdSP_IdMS_IdS(Integer idSP, Integer idMS, Integer idS);
+
+    ArrayList<CTSP> getCTSPByNameSP_IdMS_IdS(String ten, Integer idMS, Integer idS);
 }

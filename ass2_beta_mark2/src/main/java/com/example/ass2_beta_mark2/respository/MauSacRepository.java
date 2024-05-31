@@ -6,11 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-
-public interface MauSacRepository extends CrudRepository<MauSac,Integer> {
+@Repository
+public interface MauSacRepository extends CrudRepository<MauSac,Integer>, PagingAndSortingRepository<MauSac,Integer> {
     //ngay1thang6
     @Query("select  ms from MauSac ms where ms.tenMau like %:ten%")
     ArrayList<MauSac> getMSByName(@Param("ten")String ten);

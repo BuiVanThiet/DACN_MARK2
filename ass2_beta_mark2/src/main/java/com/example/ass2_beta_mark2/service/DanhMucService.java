@@ -1,6 +1,7 @@
 package com.example.ass2_beta_mark2.service;
 
 import com.example.ass2_beta_mark2.entity.model.DanhMuc;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,4 +30,8 @@ public interface DanhMucService {
     void deleteAll(ArrayList<DanhMuc> entities);
 
     void deleteAll();
+    //ngay1thang6
+    ArrayList<DanhMuc> getDanhMucByName(String ten);
+
+    Page<DanhMuc> getPhanTrang(int page, int pageSize, String ten);
 }
