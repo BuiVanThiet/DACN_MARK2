@@ -33,5 +33,7 @@ public interface KhachHangService {
 
     Optional<KhachHang> getKHBySDT(String sdt);
     //ngay1thang6
+    ArrayList<KhachHang> getKHByName(String ten);
+
     Page<KhachHang> getPhanTrang(int page, int pageSize, String ten);
 }

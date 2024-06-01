@@ -4,6 +4,9 @@ import com.example.ass2_beta_mark2.entity.model.NhanVien;
 import com.example.ass2_beta_mark2.respository.NhanVienRepository;
 import com.example.ass2_beta_mark2.service.NhanVienService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -77,4 +80,18 @@ public class NhanVienImplement implements NhanVienService {
     public  Optional<NhanVien> getNVBySdt(String sdt){
         return qlnv.getNVBySDT(sdt);
     }
+
+    @Override
+    public ArrayList<NhanVien> getNVByName(String ten) {
+        return this.qlnv.getNVBYName(ten);
+    }
+
+    @Override
+    public Page<NhanVien> getPhanTrang(int page, int pageSize, String ten) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        if(ten.isEmpty() || ten == null){
+            return this.qlnv.findAll(pageable);
+        }else {
+            return this.qlnv.findByHoTenIsContainingIgnoreCase(pageable,ten);
+        }    }
 }

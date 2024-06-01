@@ -4,6 +4,9 @@ import com.example.ass2_beta_mark2.entity.model.SanPham;
 import com.example.ass2_beta_mark2.respository.SanPhamRepository;
 import com.example.ass2_beta_mark2.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -76,5 +79,20 @@ public class SanPhamImplement implements SanPhamService {
     @Override
     public SanPham getSPByMa(String ma){
         return this.qlsp.getSPByMa(ma).orElse(new SanPham());
+    }
+
+    @Override
+    public ArrayList<SanPham> getSPByName(String name) {
+        return qlsp.getSPByName(name);
+    }
+
+    @Override
+    public Page<SanPham> getPhanTrang(int page, int pageSize, String name) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        if(name.trim().equals("")||name == null){
+            return qlsp.findAll(pageable);
+        }else {
+            return qlsp.findByTenSanPhamContainsIgnoreCase(name,pageable);
+        }
     }
 }

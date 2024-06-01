@@ -92,4 +92,22 @@ public class CtspImplement implements CtspService {
         return (ArrayList<CTSP>) this.qlctsp.getCTSPExist();
     }
 
+    @Override
+    public ArrayList<CTSP> getCTSPByIdSP_IdMS_IdS(Integer idSP, Integer idMS, Integer idS) {
+        if(idMS == null && idS == null){
+            return this.getCTSPByIdSP(idSP);
+        }else {
+            return this.qlctsp.getCTSPByIdSP_IdMS_IdS(idSP,idMS,idS);
+        }
+    }
+
+    @Override
+    public ArrayList<CTSP> getCTSPByNameSP_IdMS_IdS(String ten, Integer idMS, Integer idS) {
+        if(idMS == null  && idS == null){
+            return this.qlctsp.getCTSPByNameSP(ten);
+        }else {
+            return this.qlctsp.getCTSPByNameSP_IdMS_IdS(ten,idMS,idS);
+        }
+    }
+
 }

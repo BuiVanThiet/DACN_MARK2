@@ -4,6 +4,9 @@ import com.example.ass2_beta_mark2.entity.model.DanhMuc;
 import com.example.ass2_beta_mark2.respository.DanhMucRepository;
 import com.example.ass2_beta_mark2.service.DanhMucService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,4 +76,18 @@ public class DanhMucImplement implements DanhMucService {
     public void deleteAll() {
         qldm.deleteAll();
     }
+
+    @Override
+    public ArrayList<DanhMuc> getDanhMucByName(String ten) {
+        return this.qldm.getDanhMucByName(ten);
+    }
+
+    @Override
+    public Page<DanhMuc> getPhanTrang(int page, int pageSize, String ten) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        if(ten.isEmpty() || ten == null){
+            return this.qldm.findAll(pageable);
+        }else {
+            return this.qldm.findByTenDanhMucIsContainingIgnoreCase(pageable,ten);
+        }    }
 }

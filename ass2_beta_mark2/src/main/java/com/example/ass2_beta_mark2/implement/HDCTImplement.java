@@ -5,6 +5,9 @@ import com.example.ass2_beta_mark2.entity.sumMoney.TotalAmount;
 import com.example.ass2_beta_mark2.respository.HDCTRepository;
 import com.example.ass2_beta_mark2.service.HDCTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -86,5 +89,11 @@ public class HDCTImplement implements HDCTService {
     @Override
     public Optional<TotalAmount> getSumMoneyById(Integer id){
         return qlhdct.getSumMoneyByID(id);
+    }
+
+    @Override
+    public Page<HDCT> getHDCTByIdHD_Page(Integer id, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        return qlhdct.getHDCTByIdHD_Page(id,pageable);
     }
 }

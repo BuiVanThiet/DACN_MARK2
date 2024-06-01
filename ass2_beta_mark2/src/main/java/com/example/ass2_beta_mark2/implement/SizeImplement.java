@@ -4,6 +4,9 @@ import com.example.ass2_beta_mark2.entity.model.Size;
 import com.example.ass2_beta_mark2.respository.SizeRepository;
 import com.example.ass2_beta_mark2.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,5 +75,20 @@ public class SizeImplement implements SizeService {
     @Override
     public void deleteAll() {
         qls.deleteAll();
+    }
+
+    @Override
+    public ArrayList<Size> getSizeByName(String name) {
+        return qls.getSizeByName(name);
+    }
+
+    @Override
+    public Page<Size> getPhanTrang(int page, int pageSize, String name) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        if(name.trim().isEmpty() || name == null){
+            return qls.findAll(pageable);
+        }else {
+            return  qls.findByTenContainsIgnoreCase(name,pageable);
+        }
     }
 }

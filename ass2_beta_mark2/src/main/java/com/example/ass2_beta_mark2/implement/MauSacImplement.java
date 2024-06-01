@@ -4,6 +4,9 @@ import com.example.ass2_beta_mark2.entity.model.MauSac;
 import com.example.ass2_beta_mark2.respository.MauSacRepository;
 import com.example.ass2_beta_mark2.service.MauSacService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,4 +76,18 @@ public class MauSacImplement implements MauSacService {
     public void deleteAll() {
         qlm.deleteAll();
     }
+
+    @Override
+    public ArrayList<MauSac> getMSByName(String ten) {
+        return qlm.getMSByName(ten);
+    }
+
+    @Override
+    public Page<MauSac> getPhanTrang(int page, int pageSize, String ten) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        if(ten.isEmpty() || ten == null){
+            return qlm.findAll(pageable);
+        }else {
+            return qlm.findByTenMauContainsIgnoreCase(pageable,ten);
+        }    }
 }
