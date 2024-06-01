@@ -40,12 +40,10 @@ public class BanHangController extends BaseController {
             if(Account.getAccount().getChucVu() == null){
                 return check;
             }else {
-                model.addAttribute("form","../banHang/BanHang.jsp");
-                return "homePage/Home";
+                return "BanHang/banHang";
             }
         }
-        model.addAttribute("form","../banHang/BanHang.jsp");
-        return "homePage/Home";
+        return "BanHang/banHang";
     }
     @GetMapping("/trang-hd/{trang}")
     public String getPageHD(@PathVariable("trang") Integer trang){
@@ -115,12 +113,10 @@ public class BanHangController extends BaseController {
             if(Account.getAccount().getChucVu() == null){
                 return check;
             }else {
-                model.addAttribute("form","../banHang/BanHang.jsp");
-                return "homePage/Home";
+                return "BanHang/banHang";
             }
         }
-        model.addAttribute("form","../banHang/BanHang.jsp");
-        return "homePage/Home";
+        return "BanHang/banHang";
     }
 
     @GetMapping(value = {"/SDT"})
@@ -134,12 +130,10 @@ public class BanHangController extends BaseController {
             if(Account.getAccount().getChucVu() == null){
                 return check;
             }else {
-                modelMap.addAttribute("form","../banHang/BanHang.jsp");
-                return "homePage/Home";
+                return "BanHang/banHang";
             }
         }
-        modelMap.addAttribute("form","../banHang/BanHang.jsp");
-        return "homePage/Home";
+        return "BanHang/banHang";
     }
 
     @GetMapping(value = {"/clear"})

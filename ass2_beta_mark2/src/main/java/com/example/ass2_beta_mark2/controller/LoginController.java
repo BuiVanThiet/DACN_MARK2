@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LoginController extends BaseController {
-
     @GetMapping(value = {"/login"})
     public String getForm(ModelMap model){
         Account acc = new Account();
@@ -37,9 +36,16 @@ public class LoginController extends BaseController {
             System.out.println(Account.getAccount().toString());
             return "redirect:/";
         }else {
+            model.addAttribute("mess","Sai tai khoan hoac mat khau, moi ban dien lai!");
             Account.getAccount().setSdt(acc.getSdt());
             Account.getAccount().setPassWord(acc.getPassWord());
-            return "redirect:/login";
+            Account acc2 = new Account();
+            if(Account.getAccount() != null){
+                acc2 = Account.getAccount();
+            }
+            model.addAttribute("action","/scanAccount");
+            model.addAttribute("acc",acc2);
+            return "html/login";
         }
     }
 

@@ -34,8 +34,7 @@ public class SanPhamController extends BaseController {
 
         model.addAttribute("trang",pageMax);
         model.addAttribute("listSP",qlsp.getPhanTrang(pageNumber,2,tenTim).getContent());
-        model.addAttribute("form","../sanPham/Table.jsp");
-        return "homePage/Home";
+        return "SanPham/Index";
     }
     @GetMapping("/trang/{trang}")
     public String getPage(@PathVariable("trang") int trang,ModelMap model){
@@ -72,9 +71,7 @@ public class SanPhamController extends BaseController {
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("check",checkNut);
         model.addAttribute("value","Thêm");
-
-        model.addAttribute("form","../sanPham/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "SanPham/addAndUpdate";
     }
 
     @GetMapping(value = {"/detail/{idSP}"})
@@ -91,9 +88,7 @@ public class SanPhamController extends BaseController {
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("check",checkNut);
         model.addAttribute("value","Sửa");
-
-        model.addAttribute("form","../sanPham/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "SanPham/addAndUpdate";
     }
 
     @GetMapping(value = {"/delete/{idSP}"})
@@ -120,8 +115,7 @@ public class SanPhamController extends BaseController {
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("check",checkNut);
             model.addAttribute("value",checkNut ? "Them" : "Sua");
-            model.addAttribute("form","../sanPham/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "SanPham/addAndUpdate";
         }
         if(sp.getId() != null){
             SanPham spUpdate = this.qlsp.findById(sp.getId()).orElse(new SanPham());

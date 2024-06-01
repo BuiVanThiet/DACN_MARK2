@@ -30,8 +30,7 @@ public class ChucVuController extends BaseController {
         model.addAttribute("trang",pagetNumber);
 
         model.addAttribute("listCV",qlcv.getPhanTrang(page,2,tenSert).getContent());
-        model.addAttribute("form","../chucVu/Table.jsp");
-        return "homePage/Home";
+        return "ChucVu/Index";
     }
 
     @GetMapping(value = {"/trang/{trang}"})
@@ -68,9 +67,7 @@ public class ChucVuController extends BaseController {
         model.addAttribute("check",checkNut);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Thêm");
-
-        model.addAttribute("form","../chucVu/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "ChucVu/addAndUpdate";
     }
     @GetMapping(value = {"/delete/{idCV}"})
     public String getDelete(ModelMap model, @PathVariable(name = "idCV") int idCV){
@@ -95,9 +92,8 @@ public class ChucVuController extends BaseController {
         model.addAttribute("check",checkNut);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Sửa");
-
-        model.addAttribute("form","../chucVu/AddOrUpdate.jsp");
-        return "homePage/Home";    }
+        return "ChucVu/addAndUpdate";
+    }
     @PostMapping(value = {"/saveOrUpdate"})
     public String getSaveOrUpdate(ModelMap model, @Valid @ModelAttribute("cv") ChucVu cv, BindingResult bindingResult){
         String check = addAccout(model);
@@ -111,7 +107,7 @@ public class ChucVuController extends BaseController {
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("value",checkNut ? "Them" : "Sua");
             model.addAttribute("form","../chucVu/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "ChucVu/addAndUpdate";
         }
 
         if(cv.getId() != null){

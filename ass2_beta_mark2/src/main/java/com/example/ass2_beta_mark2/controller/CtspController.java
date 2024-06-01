@@ -43,8 +43,7 @@ public class CtspController extends BaseController {
         model.addAttribute("listS",qls.findAll());
 //        model.addAttribute("listTSP",qlctsp.getCTSPByIdSP_IdMS_IdS(idSP,mauSearch,sizeSearch));
         model.addAttribute("listTSP",this.getPhanTrang(page));
-        model.addAttribute("form","../ctsp/Table.jsp");
-        return "homePage/Home";
+        return "CTSP/Index";
     }
     @GetMapping("/tim-kiem")
     public String getSearch(@RequestParam("mauTim") String idMau,@RequestParam("sizeTim") String idS){
@@ -87,8 +86,7 @@ public class CtspController extends BaseController {
         if(check != null){
             return check;
         }
-        model.addAttribute("form","../ctsp/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "CTSP/addAndUpdate";
     }
     @GetMapping(value = {"/delete/{idCTSP}/{idSP}"})
     public String getDelete(ModelMap model, @PathVariable(name = "idCTSP") Integer idCTSP,@PathVariable(name = "idSP") Integer idSP){
@@ -113,8 +111,7 @@ public class CtspController extends BaseController {
         if(check != null){
             return check;
         }
-        model.addAttribute("form","../ctsp/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "CTSP/addAndUpdate";
     }
     @PostMapping(value = {"/saveOrUpdate"})
     public String getSaveOrUpdate(ModelMap model, @Valid @ModelAttribute("ctsp") CTSP ctsp, BindingResult bindingResult){
@@ -126,8 +123,7 @@ public class CtspController extends BaseController {
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("check",nutCheck);
             model.addAttribute("value",nutCheck ? "Them" : "Sua");
-            model.addAttribute("form","../ctsp/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "CTSP/addAndUpdate";
         }
         SanPham spSave = this.qlsp.getSPByMa(ctsp.getSanPham().getMaSanPham());
         if(ctsp.getId() != null){

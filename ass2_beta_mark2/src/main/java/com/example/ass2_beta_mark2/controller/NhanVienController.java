@@ -32,8 +32,7 @@ public class NhanVienController extends BaseController {
         model.addAttribute("trang",pageMax);
 
         model.addAttribute("listNV",qlnv.getPhanTrang(pageNumber,2,tenTim).getContent());
-        model.addAttribute("form","../nhanVien/Table.jsp");
-        return "homePage/Home";
+        return "NhanVien/Index";
     }
     @GetMapping("/trang/{trang}")
     public String getPage(@PathVariable("trang") int trang,ModelMap modelMap){
@@ -70,9 +69,7 @@ public class NhanVienController extends BaseController {
         model.addAttribute("check",checkNut);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Thêm");
-
-        model.addAttribute("form","../nhanVien/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "NhanVien/addAndUpdate";
     }
     @GetMapping(value = {"/delete/{idNV}"})
     public String getDelete(ModelMap model, @PathVariable(name = "idNV") Integer idNV){
@@ -100,9 +97,7 @@ public class NhanVienController extends BaseController {
         model.addAttribute("check",checkNut);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Sửa");
-
-        model.addAttribute("form","../nhanVien/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "NhanVien/addAndUpdate";
     }
     @PostMapping(value = {"/saveOrUpdate"})
     public String getSaveOrUpdate(ModelMap model, @Valid @ModelAttribute("nv") NhanVien nv, BindingResult bindingResult){
@@ -119,7 +114,7 @@ public class NhanVienController extends BaseController {
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("value",checkNut ? "Them" : "Sua");
             model.addAttribute("form","../nhanVien/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "NhanVien/addAndUpdate";
         }
         if(nv.getId() != null){
             NhanVien nvUpdate = this.qlnv.findById(nv.getId()).orElse(new NhanVien());

@@ -31,8 +31,7 @@ public class SizeController  extends BaseController  {
         model.addAttribute("trang",pageMax);
 
         model.addAttribute("listS",qls.getPhanTrang(pageNumber,2,tenTim).getContent());
-        model.addAttribute("form","../size/Table.jsp");
-        return "homePage/Home";
+        return "Size/Index";
     }
 
     @GetMapping("/trang/{trang}")
@@ -70,9 +69,7 @@ public class SizeController  extends BaseController  {
         model.addAttribute("s",s);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Thêm");
-        model.addAttribute("form","../size/AddOrUpdate.jsp");
-
-        return "homePage/Home";
+        return "Size/addAndUpdate";
     }
     @GetMapping(value = {"/delete/{idS}"})
     public String getDelete(ModelMap model, @PathVariable(name = "idS") String idS){
@@ -100,9 +97,8 @@ public class SizeController  extends BaseController  {
         model.addAttribute("s",s);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Sửa");
-        model.addAttribute("form","../size/AddOrUpdate.jsp");
 
-        return "homePage/Home";
+        return "Size/addAndUpdate";
     }
     @PostMapping(value = {"/saveOrUpdate"})
     public String getSaveOrUpdate(@Valid @ModelAttribute("s") Size s, BindingResult bindingResult, ModelMap model){
@@ -117,8 +113,7 @@ public class SizeController  extends BaseController  {
             model.addAttribute("check",checkTrang);
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("value",checkTrang ? "Thêm" : "Sửa");
-            model.addAttribute("form","../size/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "Size/addAndUpdate";
         }
         if(s.getId() != null){
             Size sUpdate = this.qls.findById(s.getId()).orElse(new Size());

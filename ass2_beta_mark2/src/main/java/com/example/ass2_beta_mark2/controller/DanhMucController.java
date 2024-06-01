@@ -31,7 +31,7 @@ public class DanhMucController extends BaseController {
 
         model.addAttribute("listDM",qldm.getPhanTrang(pageNumber,2,tenTim).getContent());
         model.addAttribute("form","../danhMuc/Table.jsp");
-        return "homePage/Home";
+        return "DanhMuc/Index";
     }
 
     @GetMapping("/trang/{trang}")
@@ -68,9 +68,7 @@ public class DanhMucController extends BaseController {
         model.addAttribute("check",checkNut);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Thêm");
-
-        model.addAttribute("form","../danhMuc/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "DanhMuc/addAndUpdate";
     }
     @GetMapping(value = {"/delete/{idDM}"})
     public String getDelete(ModelMap model, @PathVariable(name = "idDM") String idDM){
@@ -98,9 +96,7 @@ public class DanhMucController extends BaseController {
         model.addAttribute("check",false);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Sửa");
-
-        model.addAttribute("form","../danhMuc/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "DanhMuc/addAndUpdate";
     }
     @PostMapping(value = {"/saveOrUpdate"})
     public  String getSaveOrUpdate(ModelMap model, @Valid @ModelAttribute("dm") DanhMuc dm, BindingResult bindingResult){
@@ -113,8 +109,7 @@ public class DanhMucController extends BaseController {
             model.addAttribute("check",checkNut);
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("value",checkNut ? "Them" : "Sua");
-            model.addAttribute("form","../danhMuc/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "DanhMuc/addAndUpdate";
         }
         if(dm.getId() != null){
             DanhMuc dmUpdate = this.qldm.findById(dm.getId()).orElse(new DanhMuc());

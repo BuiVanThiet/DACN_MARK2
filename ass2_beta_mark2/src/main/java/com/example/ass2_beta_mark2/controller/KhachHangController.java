@@ -31,8 +31,7 @@ public class KhachHangController extends BaseController {
         model.addAttribute("trang",pageMax);
 
         model.addAttribute("listKH",qlkh.getPhanTrang(pageNumber,2,tenTim).getContent());
-        model.addAttribute("form","../khachHang/Table.jsp");
-        return "homePage/Home";
+        return "KhachHang/Index";
     }
 
     @GetMapping("/trang/{trang}")
@@ -79,9 +78,8 @@ public class KhachHangController extends BaseController {
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Sửa");
         model.addAttribute("check",checkNut);
-
-        model.addAttribute("form","../khachHang/AddOrUpdate.jsp");
-        return "homePage/Home";     }
+        return "KhachHang/addAndUpdate";
+    }
     @GetMapping(value = {"/trang-them"})
     public String getAdd(ModelMap model){
         checkNut = true;
@@ -95,9 +93,7 @@ public class KhachHangController extends BaseController {
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Thêm");
         model.addAttribute("check",checkNut);
-
-        model.addAttribute("form","../khachHang/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "KhachHang/addAndUpdate";
     }
     @PostMapping(value = {"/saveOrUpdate"})
     public String getSaveOrUpdate(ModelMap model, @Valid @ModelAttribute("kh") KhachHang kh, BindingResult bindingResult){
@@ -111,8 +107,7 @@ public class KhachHangController extends BaseController {
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("value",checkNut ? "Them" : "Sua");
             model.addAttribute("check",checkNut);
-            model.addAttribute("form","../khachHang/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "KhachHang/addAndUpdate";
         }
         if(kh.getId() != null){
             KhachHang khUpdate = this.qlkh.findById(kh.getId()).orElse(new KhachHang());
