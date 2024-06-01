@@ -21,42 +21,106 @@ public class BanHangController extends BaseController {
     private Integer idKH = null;
     private Integer idHD = null;
     private Integer idCTHD = null;
+    private Integer pageNumBerHD = 0;
+    private Integer pageNumBerHDCT = 0;
+    private String pageNumBerSPCT;
+    Integer mauSearch = null;
+    Integer sizeSearch = null;
+    String page;
+    String tenSP = "";
+
     private ArrayList<TotalAmount> listTien = new ArrayList<>();
     @GetMapping("/hien-thi")
     public String getIndex(ModelMap model){
         String check = addAccout(model);
 
         this.addAtribute(model);
+        System.out.println("id size la " + sizeSearch);
         if(check !=null){
             if(Account.getAccount().getChucVu() == null){
                 return check;
             }else {
-                return "BanHang/banHang";
+                model.addAttribute("form","../banHang/BanHang.jsp");
+                return "homePage/Home";
             }
         }
-        return "BanHang/banHang";
+        model.addAttribute("form","../banHang/BanHang.jsp");
+        return "homePage/Home";
     }
+    @GetMapping("/trang-hd/{trang}")
+    public String getPageHD(@PathVariable("trang") Integer trang){
+        pageNumBerHD = trang - 1;
+        return "forward:/BanHang/hien-thi";
+    }
+    @GetMapping("/trang-hdct/{trang}")
+    public String getPageHDCT(@PathVariable("trang") Integer trang){
+        pageNumBerHDCT = trang - 1;
+        return "forward:/BanHang/HDCT/"+idHD;
+    }
+    @GetMapping("/trang-ctsp/{trang}")
+    public String getPageHDCT(@PathVariable("trang") String trang){
+        pageNumBerSPCT = trang;
+        if(idHD != null){
+            return "forward:/BanHang/HDCT/"+idHD;
+        }else {
+            return "forward:/BanHang/hien-thi";
+        }
+    }
+
+    @GetMapping("/tim-kiem-ctsp")
+    public String getSearch(@RequestParam("tenTim")String ten ,@RequestParam("mauTim") String idMau,@RequestParam("sizeTim")String idS){
+        tenSP = ten.trim().toLowerCase();
+        if(idS.trim().isEmpty()){
+            this.sizeSearch = null;
+        }else {
+            this.sizeSearch = Integer.parseInt(idS);
+        }
+
+        if(idMau.trim().isEmpty()){
+            this.mauSearch = null;
+        }else {
+            this.mauSearch = Integer.parseInt(idMau);
+        }
+        pageNumBerSPCT = null;
+        if(idHD != null){
+            return "forward:/BanHang/HDCT/"+idHD;
+        }else {
+
+            return "forward:/BanHang/hien-thi";
+        }
+    }
+
     @GetMapping(value = {"/HDCT/{idHD}"})
     public String getHDCT(ModelMap model, @PathVariable(name = "idHD") Integer id){
         String check = addAccout(model);
+        this.idHD = id;
         this.addAtribute(model);
         HoaDon hd = qlhd.findById(id).orElse(new HoaDon());
         System.out.println("day la id hd " + hd.getId());
         System.out.println("day la id kh " + hd.getKhachHang().getId());
+        idKH = hd.getKhachHang().getId();
         model.addAttribute("kh",hd.getKhachHang());
         model.addAttribute("hd",hd);
         TotalAmount totalAmount = this.getToTal(hd.getId());
         model.addAttribute("sumMoney",totalAmount);
-        this.idHD = hd.getId();
-        model.addAttribute("listHDCT",qlhdct.getHDCTByIdHD(id));
+
+        int pageHDCT = (int) this.qlhdct.getHDCTByIdHD(idHD).size() /2;
+        if(this.qlhdct.getHDCTByIdHD(idHD).size() % 2 != 0){
+            pageHDCT++;
+        }
+        model.addAttribute("pageHDCT",pageHDCT);
+
+        model.addAttribute("listHDCT",qlhdct.getHDCTByIdHD_Page(idHD,pageNumBerHDCT,2).getContent());
         if(check !=null){
             if(Account.getAccount().getChucVu() == null){
                 return check;
             }else {
-                return "BanHang/banHang";
+                model.addAttribute("form","../banHang/BanHang.jsp");
+                return "homePage/Home";
             }
         }
-        return "BanHang/banHang";
+        model.addAttribute("form","../banHang/BanHang.jsp");
+        return "homePage/Home";
     }
 
     @GetMapping(value = {"/SDT"})
@@ -70,11 +134,12 @@ public class BanHangController extends BaseController {
             if(Account.getAccount().getChucVu() == null){
                 return check;
             }else {
-
-                return "BanHang/banHang";
+                modelMap.addAttribute("form","../banHang/BanHang.jsp");
+                return "homePage/Home";
             }
         }
-        return "BanHang/banHang";
+        modelMap.addAttribute("form","../banHang/BanHang.jsp");
+        return "homePage/Home";
     }
 
     @GetMapping(value = {"/clear"})
@@ -83,6 +148,13 @@ public class BanHangController extends BaseController {
         this.idKH = null;
         this.idHD = null;
         this.idCTHD = null;
+        this.pageNumBerHD = 0;
+        this.pageNumBerHDCT = 0;
+        this.pageNumBerSPCT = null;
+        this.mauSearch = null;
+        this.sizeSearch = null;
+        this.page = null;
+        this.tenSP = "";
         return "redirect:/BanHang/hien-thi";
     }
 
@@ -99,11 +171,12 @@ public class BanHangController extends BaseController {
         hd.setSdt(kh.getSdt());
         this.qlhd.save(hd);
 //        return "redirect:/BanHang/hien-thi";
-            return "redirect:/BanHang/hien-thi";
+        return "redirect:/BanHang/hien-thi";
     }
 
     @PostMapping(value = {"/Mua"})
     public String getMua(ModelMap modelMap,@RequestParam(name = "sl") Integer sl,@RequestParam(name = "idSPCT")Integer idSPCT){
+        String checkAccout = addAccout(modelMap);
 
         CTSP ctsp = this.qlctsp.findById(idSPCT).orElse(new CTSP());
         Integer slConLai = ctsp.getSoLuongTon() - sl;
@@ -148,6 +221,21 @@ public class BanHangController extends BaseController {
         return "redirect:/BanHang/HDCT/"+hdct.getHoaDon().getId();
     }
 
+    @GetMapping("/delete-hd/{id}")
+    public String getDeleteHD(@PathVariable("id") Integer id){
+        HoaDon hd = this.qlhd.findById(id).orElse(new HoaDon());
+        for (HDCT hdct: this.qlhdct.findAll()){
+            if(hdct.getHoaDon().getId() == id){
+                HDCT hdctDelete = this.qlhdct.findById(hdct.getId()).orElse(new HDCT());
+                CTSP ctspUpdate = this.qlctsp.findById(hdct.getCtsp().getId()).orElse(new CTSP());
+                ctspUpdate.setSoLuongTon(ctspUpdate.getSoLuongTon() + hdctDelete.getSoLuongMua());
+                this.qlctsp.save(ctspUpdate);
+                this.qlhdct.delete(hdctDelete);
+            }
+        }
+        this.qlhd.delete(hd);
+        return "redirect:/BanHang/clear";
+    }
     @GetMapping("/pay")
     public String getPayProduct(){
         HoaDon hd = this.qlhd.findById(idHD).orElse(new HoaDon());
@@ -159,7 +247,7 @@ public class BanHangController extends BaseController {
             }
         }
         this.qlhd.save(hd);
-        return "redirect:/BanHang/HDCT/"+idHD;
+        return "redirect:/BanHang/clear";
     }
     public void addAtribute(ModelMap model){
 
@@ -168,6 +256,16 @@ public class BanHangController extends BaseController {
         HoaDon hd = new HoaDon();
 
         TotalAmount totalAmount = new TotalAmount();
+
+        int pageHD = (int) this.qlhd.getALLHDByTT().size() /2;
+        if(this.qlhd.getALLHDByTT().size() % 2 != 0){
+            pageHD++;
+        }
+
+        int pageSPCT = (int) this.qlctsp.getCTSPByNameSP_IdMS_IdS(tenSP,mauSearch,sizeSearch).size() / 2;
+        if(this.qlctsp.getCTSPByNameSP_IdMS_IdS(tenSP,mauSearch,sizeSearch).size() % 2 != 0){
+            pageSPCT++;
+        }
 
         this.listTien = qlhdct.getTien();
         for(HoaDon hdDon : this.qlhd.findAll()){
@@ -188,13 +286,20 @@ public class BanHangController extends BaseController {
             System.out.println("tien la " + tt.getTongTien());
         }
 
-        model.addAttribute("sumMoney",totalAmount);
 
+        model.addAttribute("sumMoney",totalAmount);
+        model.addAttribute("idHD",idHD);
+        System.out.println("so trang la " + pageHD);
+        System.out.println("so trang SPCT  la " + pageSPCT);
+        model.addAttribute("pageHD",pageHD);
+        model.addAttribute("pageSPCT",pageSPCT);
         model.addAttribute("hd",hd);
         model.addAttribute("kh",kh);
-        model.addAttribute("listHD",qlhd.getALLHDByTT());
+        model.addAttribute("listMS",qlm.findAll());
+        model.addAttribute("listS",qls.findAll());
+        model.addAttribute("listHD",qlhd.getPhanTrang(pageNumBerHD,2).getContent());
         model.addAttribute("listTien",this.listTien);
-        model.addAttribute("listSPCT",qlctsp.getCTSPExist());
+        model.addAttribute("listSPCT",this.getPhanTrangSPCT(pageNumBerSPCT));
     }
 
     public TotalAmount getToTal(Integer id){
@@ -219,6 +324,17 @@ public class BanHangController extends BaseController {
             }
         }
         return false;
+    }
+
+    public ArrayList<CTSP> getPhanTrangSPCT(String pageNumber){
+        int page = 1;
+        if(pageNumber != null){
+            page = Integer.parseInt(pageNumber);
+        }
+        int start = (page -1) *2;
+        int end = Math.min((start + 2),this.qlctsp.getCTSPByNameSP_IdMS_IdS(tenSP,mauSearch,sizeSearch).size());
+        ArrayList<CTSP> list = new ArrayList<>(this.qlctsp.getCTSPByNameSP_IdMS_IdS(tenSP,mauSearch,sizeSearch).subList(start,end));
+        return list;
     }
 
 

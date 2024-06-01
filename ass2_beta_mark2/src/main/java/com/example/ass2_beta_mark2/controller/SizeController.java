@@ -15,64 +15,110 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = {"/Size"})
 public class SizeController  extends BaseController  {
     boolean checkTrang;
+    int pageNumber = 0;
+    String tenTim="";
     @GetMapping(value = {"/hien-thi"})
     public String getIndex(ModelMap model){
-        model.addAttribute("listS",qls.findAll());
         String check = addAccout(model);
         if(check != null){
             return check;
         }
-        return "Size/Index";
+
+        int pageMax = (int) this.qls.getSizeByName(tenTim).size()/2;
+        if(this.qls.getSizeByName(tenTim).size() % 2 != 0){
+            pageMax++;
+        }
+        model.addAttribute("trang",pageMax);
+
+        model.addAttribute("listS",qls.getPhanTrang(pageNumber,2,tenTim).getContent());
+        model.addAttribute("form","../size/Table.jsp");
+        return "homePage/Home";
+    }
+
+    @GetMapping("/trang/{trang}")
+    public String getPage(@PathVariable("trang") int trang,ModelMap model){
+        String check = addAccout(model);
+        if(check != null){
+            return check;
+        }
+
+        this.pageNumber = trang - 1;
+        return "forward:/Size/hien-thi";
+    }
+
+    @GetMapping("/tim-kiem")
+    public String getSearch(@RequestParam("tenTim") String search,ModelMap model){
+        String check = addAccout(model);
+        if(check != null){
+            return check;
+        }
+
+        this.tenTim = search.trim().toLowerCase();
+        this.pageNumber = 0;
+        return "forward:/Size/hien-thi";
     }
     @GetMapping(value = {"/trang-them"})
     public String getThem(ModelMap model){
+        String check = addAccout(model);
+        if(check != null){
+            return check;
+        }
+
         checkTrang = true;
         Size s = new Size();
-        model.addAttribute("check",true);
+        model.addAttribute("check",checkTrang);
         model.addAttribute("s",s);
         model.addAttribute("action","/saveOrUpdate");
         model.addAttribute("value","Thêm");
-        String check = addAccout(model);
-        if(check != null){
-            return check;
-        }
-        return "Size/addAndUpdate";
+        model.addAttribute("form","../size/AddOrUpdate.jsp");
+
+        return "homePage/Home";
     }
     @GetMapping(value = {"/delete/{idS}"})
     public String getDelete(ModelMap model, @PathVariable(name = "idS") String idS){
-        int id = Integer.parseInt(idS);
-        this.qls.deleteById(id);
         String check = addAccout(model);
         if(check != null){
             return check;
         }
+
+        int id = Integer.parseInt(idS);
+        this.qls.deleteById(id);
+        pageNumber = 0;
         return "redirect:/Size/hien-thi";
     }
     @GetMapping(value = {"/detail/{idS}"})
     public String getDetail(ModelMap model, @PathVariable(name = "idS") String idS){
-        checkTrang = false;
-        int id = Integer.parseInt(idS);
-        Size s = this.qls.findById(id).orElse(new Size());
-        model.addAttribute("check",false);
-        model.addAttribute("s",s);
-        model.addAttribute("action","/saveOrUpdate");
-        model.addAttribute("value","Sửa");
         String check = addAccout(model);
         if(check != null){
             return check;
         }
-        return "Size/addAndUpdate";
+
+        checkTrang = false;
+        int id = Integer.parseInt(idS);
+        Size s = this.qls.findById(id).orElse(new Size());
+        model.addAttribute("check",checkTrang);
+        model.addAttribute("s",s);
+        model.addAttribute("action","/saveOrUpdate");
+        model.addAttribute("value","Sửa");
+        model.addAttribute("form","../size/AddOrUpdate.jsp");
+
+        return "homePage/Home";
     }
     @PostMapping(value = {"/saveOrUpdate"})
     public String getSaveOrUpdate(@Valid @ModelAttribute("s") Size s, BindingResult bindingResult, ModelMap model){
         String check = addAccout(model);
+        if(check != null){
+            return check;
+        }
+
         if(bindingResult.hasErrors()){
             System.out.println("Loi them do ko du du lieu");
             model.addAttribute("s",s);
             model.addAttribute("check",checkTrang);
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("value",checkTrang ? "Thêm" : "Sửa");
-            return "Size/addAndUpdate";
+            model.addAttribute("form","../size/AddOrUpdate.jsp");
+            return "homePage/Home";
         }
         if(s.getId() != null){
             Size sUpdate = this.qls.findById(s.getId()).orElse(new Size());
