@@ -31,8 +31,7 @@ public class MauSacController extends BaseController {
         model.addAttribute("trang",maxPage);
 
         model.addAttribute("listM",qlm.getPhanTrang(pageNumber,2,tenTim).getContent());
-        model.addAttribute("form","../mauSac/Table.jsp");
-        return "homePage/Home";
+        return "MauSac/Index";
     }
     @GetMapping("/trang/{trang}")
     public String getPage(@PathVariable("trang") int trang,ModelMap modelMap){
@@ -66,9 +65,7 @@ public class MauSacController extends BaseController {
         model.addAttribute("value","Thêm mới");
         model.addAttribute("check",checkNut);
         model.addAttribute("action","/saveOrUpdate");
-
-        model.addAttribute("form","../mauSac/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "MauSac/addAndUpdate";
     }
     @GetMapping(value = {"/delete/{idM}"})
     public String getDelete(ModelMap model, @PathVariable(name = "idM") String idM){
@@ -96,9 +93,7 @@ public class MauSacController extends BaseController {
         model.addAttribute("value","Sửa");
         model.addAttribute("check",checkNut);
         model.addAttribute("action","/saveOrUpdate");
-
-        model.addAttribute("form","../mauSac/AddOrUpdate.jsp");
-        return "homePage/Home";
+        return "MauSac/addAndUpdate";
     }
 
     @PostMapping(value = {"/saveOrUpdate"})
@@ -113,8 +108,7 @@ public class MauSacController extends BaseController {
             model.addAttribute("value",checkNut ? "Them moi" : "Sua");
             model.addAttribute("check",checkNut);
             model.addAttribute("action","/saveOrUpdate");
-            model.addAttribute("form","../mauSac/AddOrUpdate.jsp");
-            return "homePage/Home";
+            return "MauSac/addAndUpdate";
         }
 
         if(ms.getId() != null){

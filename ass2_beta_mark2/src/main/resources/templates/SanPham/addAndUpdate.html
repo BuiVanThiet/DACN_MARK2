@@ -23,24 +23,28 @@
                 <div class="mb-3 col-12">
                     <label class="form-label text-white">Mã sản phẩm</label>
                     <input type="text" class="form-control bg-transparent text-white" th:field="*{maSanPham}" name="ma">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('maSanPham')}" th:errors="*{maSanPham}"></p>
                 </div>
             </div>
             <div class="col-12">
                 <div class="mb-3 col-12">
                     <label class="form-label text-white">Tên sản phẩm</label>
-                    <input type="text" class="form-control bg-transparent text-white" th:field="*{tenSanPham}" name="ten">
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{tenSanPham}">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('tenSanPham')}" th:errors="*{tenSanPham}"></p>
                 </div>
             </div>
             <div class="col-12">
                 <div class="mb-3">
                     <label class="form-label text-white">Danh mục</label>
                     <select class="form-select bg-transparent text-white" th:field="*{danhMuc.id}" aria-label="Default select example" name="chucVu">
+                        <option class="text-white bg-dark" th:text="'moi chon'" th:value="null"></option>
                         <option class="text-white bg-dark"
                                 th:each="dm : ${listDM}"
                                 th:text="${dm.maDanhmuc}+'-'+${dm.tenDanhMuc}"
                                 th:value="${dm.id}"
                         ></option>
                     </select>
+                    <p class="text text-danger" th:if="${#fields.hasErrors('danhMuc.tenDanhMuc')}" th:errors="*{danhMuc.tenDanhMuc}"></p>
                 </div>
             </div>
             <div class="col-12">
@@ -59,6 +63,7 @@
                         </label>
                     </div>
                 </div>
+                <p class="text text-danger" th:if="${#fields.hasErrors('trangThai')}" th:errors="*{trangThai}"></p>
             </div>
             <div class="col-12">
                 <div class="mb-3 col-12">

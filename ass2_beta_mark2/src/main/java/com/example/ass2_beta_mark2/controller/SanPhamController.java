@@ -115,6 +115,7 @@ public class SanPhamController extends BaseController {
             model.addAttribute("action","/saveOrUpdate");
             model.addAttribute("check",checkNut);
             model.addAttribute("value",checkNut ? "Them" : "Sua");
+            System.out.println("danh muc la" + sp.getDanhMuc());
             return "SanPham/addAndUpdate";
         }
         if(sp.getId() != null){

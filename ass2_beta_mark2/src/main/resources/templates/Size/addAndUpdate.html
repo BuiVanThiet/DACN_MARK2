@@ -49,6 +49,7 @@
                         </label>
                     </div>
                 </div>
+                <p class="text text-danger" th:if="${#fields.hasErrors('trangThai')}" th:errors="*{trangThai}"></p>
             </div>
             <div class="col-12">
                 <div class="mb-3 col-12">

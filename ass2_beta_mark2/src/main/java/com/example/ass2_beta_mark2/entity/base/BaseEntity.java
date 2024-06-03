@@ -14,10 +14,10 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "ngay_tao")
     private Date ngayTao;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "ngay_sua")
     private Date ngaySua;
     @Column(name = "trang_thai")
