@@ -15,7 +15,7 @@ public interface ChucVuService {
 
     boolean existsById(Integer integer);
 
-    ArrayList<ChucVu>  findAll();
+    ArrayList<ChucVu> findAll();
 
     ArrayList<ChucVu>  findAllById(ArrayList<Integer> integers);
 

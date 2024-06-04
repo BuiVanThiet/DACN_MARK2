@@ -22,13 +22,15 @@
             <div class="col-12">
                 <div class="mb-3 col-12">
                     <label class="form-label text-white">Mã màu</label>
-                    <input type="text" class="form-control bg-transparent text-white" th:field="*{maMau}" name="ma">
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{maMau}">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('maMau')}" th:errors="*{maMau}"></p>
                 </div>
             </div>
             <div class="col-12">
                 <div class="mb-3 col-12">
                     <label class="form-label text-white">Tên màu</label>
-                    <input type="text" class="form-control bg-transparent text-white" th:field="*{tenMau}" name="ten">
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{tenMau}">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('tenMau')}" th:errors="*{tenMau}"></p>
                 </div>
             </div>
             <div class="col-12">
@@ -47,6 +49,7 @@
                         </label>
                     </div>
                 </div>
+                <p class="text text-danger" th:if="${#fields.hasErrors('trangThai')}" th:errors="*{trangThai}"></p>
             </div>
             <div class="col-12">
                 <div class="mb-3 col-12">

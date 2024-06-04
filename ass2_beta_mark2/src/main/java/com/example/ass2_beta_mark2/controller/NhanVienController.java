@@ -58,9 +58,9 @@ public class NhanVienController extends BaseController {
     @GetMapping(value = {"/trang-them"})
     public String getAdd(ModelMap model){
         String check = addAccout(model);
-//        if(check != null){
-//            return check;
-//        }
+        if(check != null){
+            return check;
+        }
 
         checkNut = true;
         NhanVien nv = new NhanVien();
@@ -88,7 +88,7 @@ public class NhanVienController extends BaseController {
             return check;
         }
 
-        checkNut = true;
+        checkNut = false;
         NhanVien nv = this.qlnv.findById(idNV).orElse(new NhanVien());
         model.addAttribute("listCV",qlcv.findAll());
         model.addAttribute("nv",nv);

@@ -11,60 +11,68 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <form th:action="${'/NhanVien'+action}" th:object="${nv}" method="post">
+    <form th:action="'/NhanVien'+${action}" method="post" th:object="${nv}">
         <div class="row">
+
             <div class="col-12" th:if="${check == false}">
                 <div class="mb-3 col-12">
                     <label class="form-label text-white">Id</label>
-                    <input type="text" class="form-control bg-transparent text-white" th:field="*{id}" readonly>
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{id}" name="id" readonly>
                 </div>
             </div>
+
             <div class="col-12">
                 <div class="mb-3 col-12">
-                    <label class="form-label text-white">Mã nhân viên</label>
+                    <label class="form-label text-white">Ma nhan vien</label>
                     <input type="text" class="form-control bg-transparent text-white" th:field="*{maNhanVien}">
-                    <span class="text text-danger" th:if="${#fields.hasErrors('maNhanVien')}" th:errors="*{maNhanVien}"></span>
+                    <p class="text text-danger" th:if="${#fields.hasErrors('maNhanVien')}" th:errors="*{maNhanVien}"></p>
                 </div>
             </div>
+
             <div class="col-12">
                 <div class="mb-3 col-12">
-                    <label class="form-label text-white">Tên nhân viên</label>
-                    <input type="text" class="form-control bg-transparent text-white" th:field="*{hoTen}" name="ten">
-                    <span class="text text-danger" th:if="${#fields.hasErrors('hoTen')}" th:errors="*{hoTen}"></span>
+                    <label class="form-label text-white">Ten nhan vien</label>
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{hoTen}">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('hoTen')}" th:errors="*{hoTen}"></p>
                 </div>
             </div>
+
             <div class="col-12">
                 <div class="mb-3 col-12">
-                    <label class="form-label text-white">Địa chỉ</label>
-                    <textarea class="form-control bg-transparent text-white" th:field="*{diaChi}" name="diaChi" rows="3"></textarea>
-                    <span class="text text-danger" th:if="${#fields.hasErrors('diaChi')}" th:errors="*{diaChi}"></span>
+                    <label class="form-label text-white">Dia chi</label>
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{diaChi}">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('diaChi')}" th:errors="*{diaChi}"></p>
                 </div>
             </div>
+
             <div class="col-12">
                 <div class="mb-3 col-12">
-                    <label class="form-label text-white">Số điện thoại</label>
-                    <input type="text" class="form-control bg-transparent text-white" th:field="*{sdt}" name="sdt">
-                    <span class="text text-danger" th:if="${#fields.hasErrors('sdt')}" th:errors="*{sdt}"></span>
+                    <label class="form-label text-white">SDT</label>
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{sdt}">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('sdt')}" th:errors="*{sdt}"></p>
                 </div>
             </div>
+
             <div class="col-12">
                 <div class="mb-3 col-12">
-                    <label class="form-label text-white">Mật khẩu</label>
-                    <input type="text" class="form-control bg-transparent text-white" th:field="*{matKhau}" name="mk">
-                    <span class="text text-danger" th:if="${#fields.hasErrors('matKhau')}" th:errors="*{matKhau}"></span>
+                    <label class="form-label text-white">Mat khau</label>
+                    <input type="text" class="form-control bg-transparent text-white" th:field="*{matKhau}">
+                    <p class="text text-danger" th:if="${#fields.hasErrors('matKhau')}" th:errors="*{matKhau}"></p>
                 </div>
             </div>
+
             <div class="col-12">
-                <div class="mb-3 col-12">
-                    <label class="form-label text-white">Chức vụ</label>
+                <div class="mb-3">
+                    <label class="form-label text-white">Chuc vu</label>
                     <select class="form-select bg-transparent text-white" th:field="*{chucVu.id}" aria-label="Default select example" name="chucVu">
-                            <option class="text-white bg-dark"
-                                    th:each="cv : ${listCV}"
-                                    th:text="${cv.maChucVu}+'-'+${cv.tenChucVu}"
-                                    th:value="${cv.id}"
-                            ></option>
+                        <option class="text-white bg-dark" th:text="'moi chon'" th:value="null"></option>
+                        <option class="text-white bg-dark"
+                                th:each="cv : ${listCV}"
+                                th:text="${cv.maChucVu}+'-'+${cv.tenChucVu}"
+                                th:value="${cv.id}"
+                        ></option>
+
                     </select>
-                    <span class="text text-danger" th:if="${#fields.hasErrors('chucVu')}" th:errors="*{chucVu}"></span>
                 </div>
             </div>
 
@@ -83,14 +91,12 @@
                             Ngừng hoạt động
                         </label>
                     </div>
-                    <span class="text text-danger" th:if="${#fields.hasErrors('tranhThai')}" th:errors="*{trangThai}"></span>
                 </div>
+                <p class="text text-danger" th:if="${#fields.hasErrors('trangThai')}" th:errors="*{trangThai}"></p>
             </div>
 
             <div class="col-12">
-                <div class="mb-3 col-12">
-                    <input type="submit" class="btn btn-light bg-transparent col-12 text-white" th:value="${value}">
-                </div>
+                <input type="submit" class="btn btn-light bg-transparent col-12 text-white" th:value="${value}">
             </div>
         </div>
     </form>
